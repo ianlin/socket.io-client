@@ -1879,7 +1879,8 @@ var parseqs = _dereq_('parseqs');
 var inherit = _dereq_('component-inherit');
 var yeast = _dereq_('yeast');
 var debug = _dereq_('debug')('engine.io-client:websocket');
-var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
+//var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
+var BrowserWebSocket = undefined;
 
 /**
  * Get either the `WebSocket` or `MozWebSocket` globals
@@ -1888,10 +1889,14 @@ var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
  */
 
 var WebSocket = BrowserWebSocket;
-if (!WebSocket && typeof window === 'undefined') {
+//if (!WebSocket && typeof window === 'undefined') {
+if (!WebSocket) {
   try {
     WebSocket = _dereq_('ws');
-  } catch (e) { }
+    console.log('[SOCKET.IO-CLIENT] USE WS');
+  } catch (e) {
+    console.log('[SOCKET.IO-CLIENT] USE WS FAILED, err =', e.message);
+  }
 }
 
 /**
